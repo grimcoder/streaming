@@ -8,7 +8,6 @@ import Uploader from './Uploader';
 import List from './List';
 
 function App() {
-
   const [clip, setClip]= useState('');
   function selected(clip){
     setClip(clip)

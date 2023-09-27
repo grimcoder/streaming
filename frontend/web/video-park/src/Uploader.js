@@ -12,7 +12,7 @@ function Uploader() {
       const formData = new FormData();
       formData.append('file', file);
 
-        fetch('http://192.168.1.32:8080/upload', {
+        fetch('http://54.151.27.225:8080/upload', {
           method: 'POST',
           body: formData,
         })

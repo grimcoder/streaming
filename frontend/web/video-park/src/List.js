@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 
 
 export default function FileList(props){
-    const list_uri = 'http://192.168.1.32:8080/list';
-    const media_uri = 'http://192.168.1.32:3030/';
+    const list_uri = process.env.REACT_APP_LIST_URI;
+
     const [list, setList] = useState([]);
 
     function setClip(clip_uri){
@@ -16,7 +16,7 @@ export default function FileList(props){
         .then(stream=>stream.json())
         .then(data=>setList(data));
 
-    }, [list]);
+    }, []);
 
     return (
         <div>

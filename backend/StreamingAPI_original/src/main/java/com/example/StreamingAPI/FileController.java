@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,15 +21,19 @@ import java.nio.file.Paths;
 @CrossOrigin(origins = "*")
 @RestController
 public class FileController {
-    private static String UPLOADED_FOLDER = "/Users/t0k05ap/uploads/";
+    private static String UPLOADED_FOLDER = "/home/ubuntu/uploads/";
     @Autowired
     private MediaService service;
     private ObjectMapper mapper;
 
     String defaultDashName = "list.mpd";
-    String cda_uri = "http://localhost:3030/";
 
-
+    @Value("${MEDIA_URI}")
+    private String MEDIA_URI;
+    
+    @Value("${LIST_URI}")
+    private String LIST_URI;
+    
     public FileController(ObjectMapper mapper) {
         this.mapper = mapper;
     }
@@ -63,12 +68,13 @@ public class FileController {
             if (!Files.exists(path) || !Files.isDirectory(path)) {
                 Files.createDirectories(path);
             }
+
             var newOriginalFilePath = Path.of(path.toString(), "original.mp4");
             Files.write(newOriginalFilePath, bytes);
 
             Media media = new Media();
             media.name = name;
-            media.uri = cda_uri + name + "/list.mpd";
+            media.uri = MEDIA_URI + name + "/list.mpd";
 
             service.saveMedia(media);
             segmentToDash(newOriginalFilePath.toString(), 
